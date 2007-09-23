@@ -8,7 +8,7 @@ function PEAR2_Autoload($class)
     if ($fp) {
         fclose($fp);
         require str_replace('_', '/', $class) . '.php';
-        if (!class_exists($class, false)) {
+        if (!class_exists($class, false) && !interface_exists($class, false)) {
             die ((string) new Exception('Class ' . $class . ' was not present in ' .
                 str_replace('_', '/', $class) . '.php (include_path="' . get_include_path() .
                 '") [PEAR2_Autoload version 1.0]'));
