@@ -16,7 +16,7 @@ function PEAR2_Autoload($class)
         return true;
     }
     die ((string) new Exception('Class ' . $class . ' could not be loaded from ' .
-        str_replace('_', '/', $class) . '.php (include_path="' . get_include_path() .
+        str_replace('_', '/', $class) . '.php, file does not exist (include_path="' . get_include_path() .
         '") [PEAR2_Autoload version 1.0]'));
 }
 
