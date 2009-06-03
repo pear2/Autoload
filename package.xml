@@ -2,8 +2,7 @@
 <package version="2.1" xmlns="http://pear.php.net/dtd/package-2.1" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0     http://pear.php.net/dtd/tasks-1.0.xsd     http://pear.php.net/dtd/package-2.1     http://pear.php.net/dtd/package-2.1.xsd">
  <name>PEAR2_Autoload</name>
  <channel>pear2.php.net</channel>
- <summary>PEAR2_Autoload is the standard method of class loading for
-</summary>
+ <summary>PEAR2_Autoload is the standard method of class loading in PEAR2</summary>
  <description>development and low-volume web sites using PEAR2 packages.
 
 To use:
