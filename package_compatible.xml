@@ -35,9 +35,7 @@ require '/path/to/pear2/Autoload.php';
  <notes>Initial Release</notes>
  <contents>
   <dir name="/">
-   <dir name="src" baseinstalldir="pear2">
-    <file role="php" name="Autoload.php"/>
-   </dir>
+   <file role="php" name="php/pear2/Autoload.php"/>
   </dir>
  </contents>
  <dependencies>
@@ -46,9 +44,13 @@ require '/path/to/pear2/Autoload.php';
     <min>5.2.0</min>
    </php>
    <pearinstaller>
-    <min>2.0.0a1</min>
+    <min>1.4.8</min>
    </pearinstaller>
   </required>
  </dependencies>
- <phprelease/>
+ <phprelease>
+  <filelist>
+   <install name="php/pear2/Autoload.php" as="pear2/Autoload.php"/>
+  </filelist>
+ </phprelease>
 </package>

@@ -1,10 +1,12 @@
+Standard Autoloader for PEAR2
+
 PEAR2_Autoload is the standard method of class loading for
 development and low-volume web sites using PEAR2 packages.
 
 To use:
 
 <?php
-require '/path/to/PEAR2/Autoload.php';
+require '/path/to/pear2/Autoload.php';
 // now use class names from installed PEAR2
 // packages at will
 ?>
