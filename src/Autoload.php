@@ -86,7 +86,7 @@ if (!class_exists('\pear2\Autoload', false)) {
                 fclose($fp);
                 require $file;
                 if (!class_exists($class, false) && !interface_exists($class, false)) {
-                    die(new Exception('Class ' . $class . ' was not present in ' .
+                    die(new \Exception('Class ' . $class . ' was not present in ' .
                         $file . ' (include_path="' . get_include_path() .
                         '") [PEAR2_Autoload version 1.0]'));
                 }
