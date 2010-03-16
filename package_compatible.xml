@@ -27,10 +27,10 @@ require '/path/to/pear2/Autoload.php';
   <email>saltybeagle@php.net</email>
   <active>yes</active>
  </lead>
- <date>2009-12-13</date>
- <time>08:13:47</time>
+ <date>2010-03-16</date>
+ <time>14:27:37</time>
  <version>
-  <release>0.1.0</release>
+  <release>0.1.1</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -38,7 +38,9 @@ require '/path/to/pear2/Autoload.php';
   <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>Initial Release</notes>
+ <notes>Allow any combination of PEAR2 prefix case.
+This will help during the transition from pear2 to PEAR2.
+</notes>
  <contents>
   <dir name="/">
    <file role="php" name="php/pear2/Autoload.php"/>
