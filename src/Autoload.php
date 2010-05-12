@@ -1,6 +1,6 @@
 <?php
-namespace pear2;
-if (!class_exists('\pear2\Autoload', false)) {
+namespace PEAR2;
+if (!class_exists('\PEAR2\Autoload', false)) {
     class Autoload
     {
         /**
@@ -40,7 +40,7 @@ if (!class_exists('\pear2\Autoload', false)) {
             if (!self::$registered) {
                 // set up __autoload
                 $autoload = spl_autoload_functions();
-                spl_autoload_register('pear2\Autoload::load');
+                spl_autoload_register('PEAR2\Autoload::load');
                 if (function_exists('__autoload') && ($autoload === false)) {
                     // __autoload() was being used, but now would be ignored, add
                     // it to the autoload stack
@@ -77,7 +77,7 @@ if (!class_exists('\pear2\Autoload', false)) {
          */
         static function load($class)
         {
-            if (strtolower(substr($class, 0, 6)) !== 'pear2\\') {
+            if (strtolower(substr($class, 0, 6)) !== 'PEAR2\\') {
                 return false;
             }
             $file = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $class) . '.php';

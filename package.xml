@@ -11,7 +11,7 @@ development and low-volume web sites using PEAR2 packages.
 To use:
 
 &lt;?php
-require '/path/to/pear2/Autoload.php';
+require '/path/to/PEAR2/Autoload.php';
 // now use class names from installed PEAR2
 // packages at will
 ?&gt;</description>
@@ -27,8 +27,8 @@ require '/path/to/pear2/Autoload.php';
   <email>saltybeagle@php.net</email>
   <active>yes</active>
  </lead>
- <date>2010-03-16</date>
- <time>14:27:37</time>
+ <date>2010-05-11</date>
+ <time>21:31:21</time>
  <version>
   <release>0.1.1</release>
   <api>0.1.0</api>
@@ -43,7 +43,7 @@ This will help during the transition from pear2 to PEAR2.
 </notes>
  <contents>
   <dir name="/">
-   <dir name="src" baseinstalldir="pear2">
+   <dir name="src" baseinstalldir="PEAR2">
     <file role="php" name="Autoload.php"/>
    </dir>
   </dir>
