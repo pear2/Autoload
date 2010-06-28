@@ -77,7 +77,7 @@ if (!class_exists('\PEAR2\Autoload', false)) {
          */
         static function load($class)
         {
-            if (strtolower(substr($class, 0, 6)) !== 'PEAR2\\') {
+            if (strtolower(substr($class, 0, 6)) !== 'pear2\\') {
                 return false;
             }
             $file = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $class) . '.php';
