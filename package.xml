@@ -27,10 +27,10 @@ require '/path/to/PEAR2/Autoload.php';
   <email>saltybeagle@php.net</email>
   <active>yes</active>
  </lead>
- <date>2010-06-28</date>
- <time>14:16:16</time>
+ <date>2010-09-21</date>
+ <time>22:37:42</time>
  <version>
-  <release>0.2.1</release>
+  <release>0.2.2</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -38,8 +38,10 @@ require '/path/to/PEAR2/Autoload.php';
   <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>Bugfix Release:
-* Correct case-insensitive check for vendor namespace of PEAR2 [saltybeagle]</notes>
+ <notes>Remove the dependency on include_path for the following reasons:
+
+1. Speed.
+2. The include_path can be externally modified which can cause files that exist to not be loaded.</notes>
  <contents>
   <dir name="/">
    <dir name="src" baseinstalldir="PEAR2">
