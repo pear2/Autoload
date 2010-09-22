@@ -53,17 +53,13 @@ if (!class_exists('\PEAR2\Autoload', false)) {
         /**
          * Add a path
          * 
-         * @param string $path The directory to add to the include path
+         * @param string $path The directory to add to the set of PEAR2 paths
          * 
          * @return void
          */
         protected static function addPath($path)
         {
             if (!in_array($path, self::$paths)) {
-                $paths = explode(PATH_SEPARATOR, get_include_path());
-                if (!in_array($path, $paths)) {
-                    set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-                }
                 self::$paths[] = $path;
             }
         }
@@ -80,17 +76,19 @@ if (!class_exists('\PEAR2\Autoload', false)) {
             if (strtolower(substr($class, 0, 6)) !== 'pear2\\') {
                 return false;
             }
-            $file = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $class) . '.php';
-            $fp = @fopen($file, 'r', true);
-            if ($fp) {
-                fclose($fp);
-                require $file;
-                if (!class_exists($class, false) && !interface_exists($class, false)) {
-                    die(new \Exception('Class ' . $class . ' was not present in ' .
-                        $file . ' (include_path="' . get_include_path() .
-                        '") [PEAR2_Autoload version 1.1]'));
+            foreach (self::$paths as $path) {
+                $file = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $class) . '.php';
+                $fp = @fopen($path . DIRECTORY_SEPARATOR . $file, 'r', true);
+                if ($fp) {
+                    fclose($fp);
+                    require $path . DIRECTORY_SEPARATOR . $file;
+                    if (!class_exists($class, false) && !interface_exists($class, false)) {
+                        die(new \Exception('Class ' . $class . ' was not present in ' .
+                            $file . ' (include_path="' . get_include_path() .
+                            '") [PEAR2_Autoload version 1.1]'));
+                    }
+                    return true;
                 }
-                return true;
             }
             $e = new \Exception('Class ' . $class . ' could not be loaded from ' .
                 $file . ', file does not exist (include_path="' . get_include_path() .
