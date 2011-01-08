@@ -27,10 +27,10 @@ require '/path/to/PEAR2/Autoload.php';
   <email>saltybeagle@php.net</email>
   <active>yes</active>
  </lead>
- <date>2010-09-21</date>
- <time>22:37:42</time>
+ <date>2011-01-08</date>
+ <time>14:03:05</time>
  <version>
-  <release>0.2.2</release>
+  <release>0.2.3</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -38,10 +38,11 @@ require '/path/to/PEAR2/Autoload.php';
   <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>Remove the dependency on include_path for the following reasons:
+ <notes>Minor Bugfixes:
 
-1. Speed.
-2. The include_path can be externally modified which can cause files that exist to not be loaded.</notes>
+ - Remove use of @fopen hack [saltybeagle]
+ - Improve error messages [saltybeagle]
+</notes>
  <contents>
   <dir name="/">
    <file role="php" name="php/PEAR2/Autoload.php"/>
