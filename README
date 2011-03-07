@@ -5,8 +5,12 @@ development and low-volume web sites using PEAR2 packages.
 
 To use:
 
-<?php
-require '/path/to/PEAR2/Autoload.php';
-// now use class names from installed PEAR2
-// packages at will
-?>
+    <?php
+    require '/path/to/PEAR2/Autoload.php';
+    // Now use class names from installed PEAR2 packages at will
+    
+    // You can also inclue other PEAR2 registries
+    // require '/other/pear2/repo/PEAR2/Autoload.php';
+    // or manually
+    // PEAR2\Autoload::initialize('/other/pear2/repo');
+    ?>
