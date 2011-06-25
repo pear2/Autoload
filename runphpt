@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#
+# We need to run these tests outside of pyrus runtime to keep existing 
+# PEAR2\Autoload from preventing this file from loading
+#
+
+export NO_INTERACTION=1
+/usr/bin/env php tests/run-tests.php.inc
