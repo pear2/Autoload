@@ -10,11 +10,15 @@ development and low-volume web sites using PEAR2 packages.
 
 To use:
 
-&lt;?php
-require '/path/to/PEAR2/Autoload.php';
-// now use class names from installed PEAR2
-// packages at will
-?&gt;</description>
+    &lt;?php
+    require '/path/to/PEAR2/Autoload.php';
+    // Now use class names from installed PEAR2 packages at will
+    
+    // You can also inclue other PEAR2 registries
+    // require '/other/pear2/repo/PEAR2/Autoload.php';
+    // or manually
+    // PEAR2\Autoload::initialize('/other/pear2/repo');
+    ?&gt;</description>
  <lead>
   <name>Gregory Beaver</name>
   <user>cellog</user>
@@ -27,10 +31,16 @@ require '/path/to/PEAR2/Autoload.php';
   <email>saltybeagle@php.net</email>
   <active>yes</active>
  </lead>
- <date>2011-01-08</date>
- <time>14:03:05</time>
+ <contributor>
+  <name>Clay Loveless</name>
+  <user>clay</user>
+  <email>clay@php.net</email>
+  <active>yes</active>
+ </contributor>
+ <date>2011-08-08</date>
+ <time>13:56:45</time>
  <version>
-  <release>0.2.3</release>
+  <release>0.2.4</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -38,15 +48,33 @@ require '/path/to/PEAR2/Autoload.php';
   <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>Minor Bugfixes:
+ <notes>- Add optional dynamically-generated class map so full file paths can be
+  used when loading class files.
+  
+- Added a few test cases, along with non-Pyrus .phpt runner to keep us from
+  trying to load PEAR2\Autoload twice!
 
- - Remove use of @fopen hack [saltybeagle]
- - Improve error messages [saltybeagle]
+- Removed PEAR2\ prefix requirement for loaded classes. Now psr-0 compliant.
 </notes>
  <contents>
   <dir name="/">
-   <dir name="src" baseinstalldir="PEAR2">
-    <file role="php" name="Autoload.php"/>
+   <dir name="src" baseinstalldir="/">
+    <dir name="PEAR2">
+     <file role="php" name="Autoload.php"/>
+    </dir>
+   </dir>
+   <dir name="tests" baseinstalldir="/">
+    <dir name="_files">
+     <dir name="testDir1">
+      <file role="test" name="Foo.php"/>
+     </dir>
+    </dir>
+    <file role="test" name="initialize_basic001.phpt"/>
+    <file role="test" name="initialize_basic002.phpt"/>
+    <file role="test" name="initialize_basic003.phpt"/>
+    <file role="test" name="initialize_basic004.phpt"/>
+    <file role="test" name="initialize_basic005.phpt"/>
+    <file role="test" name="run-tests.php.inc"/>
    </dir>
   </dir>
  </contents>
