@@ -37,8 +37,14 @@ To use:
   <email>clay@php.net</email>
   <active>yes</active>
  </contributor>
- <date>2011-08-08</date>
- <time>13:56:45</time>
+ <contributor>
+  <name>Vasil Rangelov</name>
+  <user>boen_robot</user>
+  <email>boen.robot@gmail.com</email>
+  <active>yes</active>
+ </contributor>
+ <date>2012-02-05</date>
+ <time>19:12:49</time>
  <version>
   <release>0.2.4</release>
   <api>0.1.0</api>
