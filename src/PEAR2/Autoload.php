@@ -166,6 +166,9 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 if (file_exists($path . DIRECTORY_SEPARATOR . $file)) {
                     require $path . DIRECTORY_SEPARATOR . $file;
                     if (!self::loadSuccessful($class)) {
+                        if (count(spl_autoload_functions()) > 1) {
+                            return false;
+                        }
                         throw new \Exception('Class ' . $class . ' was not present in ' .
                             $path . DIRECTORY_SEPARATOR . $file .
                             '") [PEAR2_Autoload-@PACKAGE_VERSION@]');
@@ -177,18 +180,20 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                     return true;
                 }
             }
-            
+            if (count(spl_autoload_functions()) > 1) {
+                return false;
+            }
             $e = new \Exception('Class ' . $class . ' could not be loaded from ' .
                 $file . ', file does not exist (registered paths="' .
                 implode(PATH_SEPARATOR, self::$paths) .
                 '") [PEAR2_Autoload-@PACKAGE_VERSION@]');
             $trace = $e->getTrace();
             if (isset($trace[2]) && isset($trace[2]['function']) &&
-                  in_array($trace[2]['function'], array('class_exists', 'interface_exists'))) {
+                in_array($trace[2]['function'], array('class_exists', 'interface_exists'))) {
                 return false;
             }
             if (isset($trace[1]) && isset($trace[1]['function']) &&
-                  in_array($trace[1]['function'], array('class_exists', 'interface_exists'))) {
+                in_array($trace[1]['function'], array('class_exists', 'interface_exists'))) {
                 return false;
             }
             throw $e;
