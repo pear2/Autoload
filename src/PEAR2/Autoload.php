@@ -253,10 +253,7 @@ if (!class_exists('\PEAR2\Autoload', false)) {
          */
         protected static function loadSuccessful($class)
         {
-            if (!class_exists($class, false) && !interface_exists($class, false)) {
-                return false;
-            }
-            return true;
+            return class_exists($class, false) || interface_exists($class, false);
         }
         
         /**
