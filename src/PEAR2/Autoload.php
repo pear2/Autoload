@@ -8,14 +8,13 @@
  * 
  * PHP version 5
  * 
- * @category  PEAR2
- * @package   PEAR2_Autoload
- * @author    Gregory Beaver <cellog@php.net>
- * @author    Brett Bieber <saltybeagle@php.net>
- * @copyright 2012 PEAR2
- * @license   http://www.opensource.org/licenses/bsd-license.php New BSD License
- * @version   GIT: $Id$
- * @link      http://pear2.php.net/PEAR2_Autoload
+ * @category PEAR2
+ * @package  PEAR2_Autoload
+ * @author   Gregory Beaver <cellog@php.net>
+ * @author   Brett Bieber <saltybeagle@php.net>
+ * @license  http://www.opensource.org/licenses/bsd-license.php New BSD License
+ * @version  GIT: $Id$
+ * @link     http://pear2.php.net/PEAR2_Autoload
  */
 namespace PEAR2;
 if (!class_exists('\PEAR2\Autoload', false)) {
@@ -27,18 +26,47 @@ if (!class_exists('\PEAR2\Autoload', false)) {
      * 
      * PHP version 5
      * 
-     * @category  PEAR2
-     * @package   PEAR2_Autoload
-     * @author    Gregory Beaver <cellog@php.net>
-     * @author    Brett Bieber <saltybeagle@php.net>
-     * @copyright 2012 PEAR2
-     * @license   http://www.opensource.org/licenses/bsd-license.php
+     * @category PEAR2
+     * @package  PEAR2_Autoload
+     * @author   Gregory Beaver <cellog@php.net>
+     * @author   Brett Bieber <saltybeagle@php.net>
+     * @license  http://www.opensource.org/licenses/bsd-license.php
      * New BSDLicense
-     * @version   GIT: $Id$
-     * @link      http://pear2.php.net/PEAR2_Autoload
+     * @link     http://pear2.php.net/PEAR2_Autoload
      */
     class Autoload
     {
+        /**
+         * Used at {@link initialize()} to specify that the load function, path
+         * and map should be appended to the respective lists.
+         */
+        const APPEND = 0;
+
+        /**
+         * Used at {@link initialize()} to specify that the load function should
+         * be prepended on the autoload stack, instead of being appended.
+         */
+        const PREPEND_LOAD = 1;
+
+        /**
+         * Used at {@link initialize()} to specify that the path should be
+         * prepended on the list of paths, instead of being appended.
+         */
+        const PREPEND_PATH = 2;
+
+        /**
+         * Used at {@link initialize()} to specify that the map should be
+         * prepended on the list of maps, instead of being appended.
+         */
+        const PREPEND_MAP = 4;
+
+        /**
+         * Used at {@link initialize()} to specify that the load function, path
+         * and map should be prepended on their respective lists, instead of
+         * being appended.
+         */
+        const PREPEND = 7;
+
         /**
          * Whether the autoload class has been spl_autoload_register-ed
          * 
@@ -84,32 +112,38 @@ if (!class_exists('\PEAR2\Autoload', false)) {
         /**
          * Initialize the PEAR2 autoloader
          * 
-         * @param string $path    Directory path to register
+         * @param string $path    Directory path(s) to register.
          * @param string $mapfile Path to a mapping file to register.
+         * @param int    $flags   A bitmaks with options for the autoloader.
+         * See the PREPEND(_*) constants for details.
          * 
          * @return void
          */
-        static function initialize($path, $mapfile = null)
-        {
-            self::register();
-            self::addPath($path);
-            self::addMap($mapfile);
+        static function initialize(
+            $path, $mapfile = null, $flags = self::APPEND
+        ) {
+            self::register(0 !== $flags & self::PREPEND_LOAD);
+            self::addPath($path, 0 !== ($flags & self::PREPEND_PATH));
+            self::addMap($mapfile, 0 !== ($flags & self::PREPEND_MAP));
         }
 
         /**
          * Register the PEAR2 autoload class with spl_autoload_register
          * 
+         * @param bool $prepend Whether to prepend the load function to the
+         * autoload stack instead of appending it.
+         * 
          * @return void
          */
-        protected static function register()
+        protected static function register($prepend = false)
         {
             if (!self::$registered) {
                 // set up __autoload
                 $autoload = spl_autoload_functions();
-                spl_autoload_register('PEAR2\Autoload::load');
+                spl_autoload_register('PEAR2\Autoload::load', true, $prepend);
                 if (function_exists('__autoload') && ($autoload === false)) {
-                    // __autoload() was being used, but now would be ignored, add
-                    // it to the autoload stack
+                    // __autoload() was being used, but now would be ignored,
+                    // add it to the autoload stack
                     spl_autoload_register('__autoload');
                 }
             }
@@ -119,27 +153,37 @@ if (!class_exists('\PEAR2\Autoload', false)) {
         /**
          * Add a path
          * 
-         * @param string $path The directory to add to the set of PEAR2 paths
+         * @param string $paths   The folder(s) to add to the set of paths.
+         * @param bool   $prepend Whether to prepend the path to the list of
+         * paths instead of appending it.
          * 
          * @return void
          */
-        protected static function addPath($path)
+        protected static function addPath($paths, $prepend = false)
         {
-            if (!in_array($path, self::$paths)) {
-                self::$paths[] = $path;
+            foreach (explode(PATH_SEPARATOR, $paths) as $path) {
+                if (!in_array($path, self::$paths)) {
+                    if ($prepend) {
+                        self::$paths = array_merge(array($path), self::$paths);
+                    } else {
+                        self::$paths[] = $path;
+                    }
+                }
             }
         }
 
         /**
          * Add a classname-to-file map
          *
-         * @param string $mapfile The filename of the classmap
+         * @param string $mapfile The filename of the classmap.
+         * @param bool   $prepend Whether to prepend the map to the list of maps
+         * instead of appending it.
          *
          * @return void
          */
-        protected static function addMap($mapfile)
+        protected static function addMap($mapfile, $prepend = false)
         {
-            if (! in_array($mapfile, self::$maps)) {
+            if (!in_array($mapfile, self::$maps)) {
                 
                 // keep track of specific map file loaded in this
                 // instance so we can update it if necessary                
@@ -149,8 +193,15 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                     $map = include $mapfile;
                     if (is_array($map)) {
                         // mapfile contains a valid map, so we'll keep it
-                        self::$maps[] = $mapfile;                        
-                        self::$map = array_merge(self::$map, $map);
+                        if ($prepend) {
+                            self::$maps = array_merge(
+                                array($mapfile), self::$maps
+                            );
+                            self::$map = array_merge($map, self::$map);
+                        } else {
+                            self::$maps[] = $mapfile;
+                            self::$map = array_merge(self::$map, $map);
+                        }
                     }
                 }
                 
@@ -198,8 +249,11 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 }
             }
 
-            $file = str_replace(array('_', '\\'), DIRECTORY_SEPARATOR, $class) .
-                '.php';
+            $file = str_replace(
+                strpos($class, '\\') === false ? '_' : '\\',
+                DIRECTORY_SEPARATOR,
+                $class
+            ) . '.php';
             foreach (self::$paths as $path) {
                 if (file_exists($path . DIRECTORY_SEPARATOR . $file)) {
                     require $path . DIRECTORY_SEPARATOR . $file;
@@ -215,7 +269,9 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                     }
                     
                     if (in_array($class, self::$unmapped)) {
-                        self::updateMap($class, $path . DIRECTORY_SEPARATOR . $file);
+                        self::updateMap(
+                            $class, $path . DIRECTORY_SEPARATOR . $file
+                        );
                     }
                     return true;
                 }
@@ -253,7 +309,8 @@ if (!class_exists('\PEAR2\Autoload', false)) {
          */
         protected static function loadSuccessful($class)
         {
-            return class_exists($class, false) || interface_exists($class, false);
+            return class_exists($class, false)
+                || interface_exists($class, false);
         }
         
         /**
