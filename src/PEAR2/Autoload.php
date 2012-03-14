@@ -323,7 +323,7 @@ if (!class_exists('\PEAR2\Autoload', false)) {
             return class_exists($class, false)
                 || interface_exists($class, false)
                 || (in_array('trait_exists', self::$checkFunctions, true)
-                && trait_exists($class));
+                && trait_exists($class, false));
         }
         
         /**
