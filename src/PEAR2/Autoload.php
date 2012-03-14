@@ -108,6 +108,15 @@ if (!class_exists('\PEAR2\Autoload', false)) {
          * @var array
          */
         protected static $unmapped = array();
+        
+        /**
+         * Array of functions to be checked in exception traces.
+         * 
+         * @var array 
+         */
+        protected static $checkFunctions = array(
+            'class_exists', 'interface_exists'
+        );
 
         /**
          * Initialize the PEAR2 autoloader
@@ -146,8 +155,11 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                     // add it to the autoload stack
                     spl_autoload_register('__autoload');
                 }
+                if (function_exists('trait_exists')) {
+                    self::$checkFunctions[2] = 'trait_exists';
+                }
+                self::$registered = true;
             }
-            self::$registered = true;
         }
 
         /**
@@ -286,14 +298,13 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 '") [PEAR2_Autoload-@PACKAGE_VERSION@]'
             );
             $trace = $e->getTrace();
-            $checkFunctions = array('class_exists', 'interface_exists');
             if (isset($trace[2]) && isset($trace[2]['function'])
-                && in_array($trace[2]['function'], $checkFunctions)
+                && in_array($trace[2]['function'], self::$checkFunctions)
             ) {
                 return false;
             }
             if (isset($trace[1]) && isset($trace[1]['function'])
-                && in_array($trace[1]['function'], $checkFunctions)
+                && in_array($trace[1]['function'], self::$checkFunctions)
             ) {
                 return false;
             }
@@ -310,7 +321,9 @@ if (!class_exists('\PEAR2\Autoload', false)) {
         protected static function loadSuccessful($class)
         {
             return class_exists($class, false)
-                || interface_exists($class, false);
+                || interface_exists($class, false)
+                || (in_array('trait_exists', self::$checkFunctions, true)
+                && trait_exists($class));
         }
         
         /**
