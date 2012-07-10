@@ -156,7 +156,7 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                     spl_autoload_register('__autoload');
                 }
                 if (function_exists('trait_exists')) {
-                    self::$checkFunctions[2] = 'trait_exists';
+                    self::$checkFunctions[] = 'trait_exists';
                 }
                 self::$registered = true;
             }
@@ -201,7 +201,7 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 // instance so we can update it if necessary                
                 self::$mapfile = $mapfile;
                 
-                if (file_exists($mapfile)) {
+                if (is_file($mapfile)) {
                     $map = include $mapfile;
                     if (is_array($map)) {
                         // mapfile contains a valid map, so we'll keep it
@@ -251,8 +251,8 @@ if (!class_exists('\PEAR2\Autoload', false)) {
             // need to check if there's a current map file specified ALSO.
             // this could be the first time writing it.
             $mapped = self::isMapped($class);
-            if ($mapped) {
-                require self::$map[$class];
+            if ($mapped && is_file(self::$map[$class])) {
+                include self::$map[$class];
                 if (!self::loadSuccessful($class)) {
                     // record this failure & keep going, we may still find it
                     self::$unmapped[] = $class;
@@ -261,14 +261,19 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 }
             }
 
-            $file = str_replace(
-                strpos($class, '\\') === false ? '_' : '\\',
-                DIRECTORY_SEPARATOR,
-                $class
-            ) . '.php';
+            $file = '';
+            $className = $class;
+            if (false !== $lastNsPos = strrpos($class, '\\')) {
+                $namespace = substr($class, 0, $lastNsPos);
+                $className = substr($class, $lastNsPos + 1);
+                $file = str_replace(
+                    '\\', DIRECTORY_SEPARATOR, $namespace
+                ) . DIRECTORY_SEPARATOR;
+            }
+            $file .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
             foreach (self::$paths as $path) {
-                if (file_exists($path . DIRECTORY_SEPARATOR . $file)) {
-                    require $path . DIRECTORY_SEPARATOR . $file;
+                if (is_file($path . DIRECTORY_SEPARATOR . $file)) {
+                    include $path . DIRECTORY_SEPARATOR . $file;
                     if (!self::loadSuccessful($class)) {
                         if (count(spl_autoload_functions()) > 1) {
                             return false;
