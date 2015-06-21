@@ -2,12 +2,12 @@
 
 /**
  * Standard Autoloader for PEAR2
- * 
+ *
  * PEAR2_Autoload is the standard method of class loading for development and
  * low-volume web sites using PEAR2 packages.
- * 
+ *
  * PHP version 5
- * 
+ *
  * @category PEAR2
  * @package  PEAR2_Autoload
  * @author   Gregory Beaver <cellog@php.net>
@@ -17,20 +17,21 @@
  * @link     http://pear2.php.net/PEAR2_Autoload
  */
 namespace PEAR2;
+
 if (!class_exists('\PEAR2\Autoload', false)) {
     /**
      * Standard Autoloader for PEAR2
-     * 
+     *
      * PEAR2_Autoload is the standard method of class loading for development
      * and low-volume web sites using PEAR2 packages.
-     * 
+     *
      * PHP version 5
-     * 
+     *
      * @category PEAR2
      * @package  PEAR2_Autoload
      * @author   Gregory Beaver <cellog@php.net>
      * @author   Brett Bieber <saltybeagle@php.net>
-     * @license  http://www.opensource.org/licenses/bsd-license.php
+     * @license  http://www.opensource.org/licenses/bsd-license.php BSD
      * New BSDLicense
      * @link     http://pear2.php.net/PEAR2_Autoload
      */
@@ -69,18 +70,18 @@ if (!class_exists('\PEAR2\Autoload', false)) {
 
         /**
          * Whether the autoload class has been spl_autoload_register-ed
-         * 
+         *
          * @var bool
          */
         protected static $registered = false;
 
         /**
          * Array of PEAR2 autoload paths registered
-         * 
+         *
          * @var array
          */
         protected static $paths = array();
-        
+
         /**
          * Array of classname-to-file mapping
          *
@@ -108,11 +109,11 @@ if (!class_exists('\PEAR2\Autoload', false)) {
          * @var array
          */
         protected static $unmapped = array();
-        
+
         /**
          * Array of functions to be checked in exception traces.
-         * 
-         * @var array 
+         *
+         * @var array
          */
         protected static $checkFunctions = array(
             'class_exists', 'interface_exists'
@@ -120,16 +121,18 @@ if (!class_exists('\PEAR2\Autoload', false)) {
 
         /**
          * Initialize the PEAR2 autoloader
-         * 
+         *
          * @param string $path    Directory path(s) to register.
          * @param string $mapfile Path to a mapping file to register.
          * @param int    $flags   A bitmaks with options for the autoloader.
          * See the PREPEND(_*) constants for details.
-         * 
+         *
          * @return void
          */
-        static function initialize(
-            $path, $mapfile = null, $flags = self::APPEND
+        public static function initialize(
+            $path,
+            $mapfile = null,
+            $flags = self::APPEND
         ) {
             self::register(0 !== $flags & self::PREPEND_LOAD);
             self::addPath($path, 0 !== ($flags & self::PREPEND_PATH));
@@ -138,10 +141,10 @@ if (!class_exists('\PEAR2\Autoload', false)) {
 
         /**
          * Register the PEAR2 autoload class with spl_autoload_register
-         * 
+         *
          * @param bool $prepend Whether to prepend the load function to the
          * autoload stack instead of appending it.
-         * 
+         *
          * @return void
          */
         protected static function register($prepend = false)
@@ -164,11 +167,11 @@ if (!class_exists('\PEAR2\Autoload', false)) {
 
         /**
          * Add a path
-         * 
+         *
          * @param string $paths   The folder(s) to add to the set of paths.
          * @param bool   $prepend Whether to prepend the path to the list of
          * paths instead of appending it.
-         * 
+         *
          * @return void
          */
         protected static function addPath($paths, $prepend = false)
@@ -196,18 +199,18 @@ if (!class_exists('\PEAR2\Autoload', false)) {
         protected static function addMap($mapfile, $prepend = false)
         {
             if (!in_array($mapfile, self::$maps)) {
-                
                 // keep track of specific map file loaded in this
-                // instance so we can update it if necessary                
+                // instance so we can update it if necessary
                 self::$mapfile = $mapfile;
-                
+
                 if (is_file($mapfile)) {
                     $map = include $mapfile;
                     if (is_array($map)) {
                         // mapfile contains a valid map, so we'll keep it
                         if ($prepend) {
                             self::$maps = array_merge(
-                                array($mapfile), self::$maps
+                                array($mapfile),
+                                self::$maps
                             );
                             self::$map = array_merge($map, self::$map);
                         } else {
@@ -216,15 +219,15 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                         }
                     }
                 }
-                
+
             }
         }
 
         /**
          * Check if the class is already defined in a classmap
-         * 
+         *
          * @param string $class The class to look for
-         * 
+         *
          * @return bool
          */
         protected static function isMapped($class)
@@ -241,12 +244,12 @@ if (!class_exists('\PEAR2\Autoload', false)) {
 
         /**
          * Load a PEAR2 class
-         * 
+         *
          * @param string $class The class to load
-         * 
+         *
          * @return bool
          */
-        static function load($class)
+        public static function load($class)
         {
             // need to check if there's a current map file specified ALSO.
             // this could be the first time writing it.
@@ -267,7 +270,9 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 $namespace = substr($class, 0, $lastNsPos);
                 $className = substr($class, $lastNsPos + 1);
                 $file = str_replace(
-                    '\\', DIRECTORY_SEPARATOR, $namespace
+                    '\\',
+                    DIRECTORY_SEPARATOR,
+                    $namespace
                 ) . DIRECTORY_SEPARATOR;
             }
             $file .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
@@ -284,10 +289,11 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                             '") [PEAR2_Autoload-@PACKAGE_VERSION@]'
                         );
                     }
-                    
+
                     if (in_array($class, self::$unmapped)) {
                         self::updateMap(
-                            $class, $path . DIRECTORY_SEPARATOR . $file
+                            $class,
+                            $path . DIRECTORY_SEPARATOR . $file
                         );
                     }
                     return true;
@@ -318,9 +324,9 @@ if (!class_exists('\PEAR2\Autoload', false)) {
 
         /**
          * Check if the requested class was loaded from the specified path
-         * 
+         *
          * @param string $class The name of the class to check.
-         * 
+         *
          * @return bool
          */
         protected static function loadSuccessful($class)
@@ -330,14 +336,14 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 || (in_array('trait_exists', self::$checkFunctions, true)
                 && trait_exists($class, false));
         }
-        
+
         /**
-         * If possible, update the classmap file with newly-discovered 
+         * If possible, update the classmap file with newly-discovered
          * mapping.
-         * 
+         *
          * @param string $class  Class name discovered
          * @param string $origin File where class was found
-         * 
+         *
          * @return void
          */
         protected static function updateMap($class, $origin)
@@ -347,7 +353,7 @@ if (!class_exists('\PEAR2\Autoload', false)) {
             ) {
                 self::$map[$class] = $origin;
                 file_put_contents(
-                    self::$mapfile, 
+                    self::$mapfile,
                     '<'."?php\n"
                     . "// PEAR2\Autoload auto-generated classmap\n"
                     . "return " . var_export(self::$map, true) . ';',
@@ -355,13 +361,13 @@ if (!class_exists('\PEAR2\Autoload', false)) {
                 );
             }
         }
-        
+
         /**
-         * return the array of paths PEAR2 autoload has registered
-         * 
+         * Return the array of paths PEAR2 autoload has registered
+         *
          * @return array
          */
-        static function getPaths()
+        public static function getPaths()
         {
             return self::$paths;
         }
