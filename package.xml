@@ -43,10 +43,10 @@ To use:
   <email>boen.robot@gmail.com</email>
   <active>yes</active>
  </contributor>
- <date>2012-02-05</date>
- <time>19:12:49</time>
+ <date>2016-11-07</date>
+ <time>02:44:17</time>
  <version>
-  <release>0.2.4</release>
+  <release>0.3.0</release>
   <api>0.1.0</api>
  </version>
  <stability>
@@ -54,32 +54,52 @@ To use:
   <api>alpha</api>
  </stability>
  <license uri="http://www.opensource.org/licenses/bsd-license.php">New BSD License</license>
- <notes>- Add optional dynamically-generated class map so full file paths can be
-  used when loading class files.
-  
-- Added a few test cases, along with non-Pyrus .phpt runner to keep us from
-  trying to load PEAR2\Autoload twice!
+ <notes>- Added ability to autoload traits.
 
-- Removed PEAR2\ prefix requirement for loaded classes. Now psr-0 compliant.
+- Added ability to prepend paths instead of appending them,
+  and specifying them as PATH_SEPARATOR separated list.
+
+- Fixed GH #3 - Exceptions are not thrown if there are other registered
+  autoloaders at the time of the failed autoloading.
+
+- This package is now installable from PEAR.
+
+- CS fixes.
 </notes>
  <contents>
   <dir name="/">
    <dir name="src" baseinstalldir="/">
     <dir name="PEAR2">
-     <file role="php" name="Autoload.php"/>
+     <file role="php" name="Autoload.php">
+      <tasks:replace type="package-info" to="version" from="GIT: $Id$"/>
+     </file>
     </dir>
    </dir>
    <dir name="tests" baseinstalldir="/">
     <dir name="_files">
      <dir name="testDir1">
       <file role="test" name="Foo.php"/>
+      <file role="test" name="FooTrait.php"/>
      </dir>
     </dir>
-    <file role="test" name="initialize_basic001.phpt"/>
-    <file role="test" name="initialize_basic002.phpt"/>
-    <file role="test" name="initialize_basic003.phpt"/>
-    <file role="test" name="initialize_basic004.phpt"/>
-    <file role="test" name="initialize_basic005.phpt"/>
+    <file role="test" name="initialize_basic001.phpt">
+     <tasks:replace type="pear-config" to="php_dir" from="../src"/>
+    </file>
+    <file role="test" name="initialize_basic002.phpt">
+     <tasks:replace type="pear-config" to="php_dir" from="../src"/>
+    </file>
+    <file role="test" name="initialize_basic003.phpt">
+     <tasks:replace type="pear-config" to="php_dir" from="../src"/>
+    </file>
+    <file role="test" name="initialize_basic004.phpt">
+     <tasks:replace type="pear-config" to="php_dir" from="../src"/>
+    </file>
+    <file role="test" name="initialize_basic005.phpt">
+     <tasks:replace type="pear-config" to="php_dir" from="../src"/>
+    </file>
+    <file role="test" name="initialize_trait001.phpt">
+     <tasks:replace type="pear-config" to="php_dir" from="../src"/>
+    </file>
     <file role="test" name="run-tests.php.inc"/>
    </dir>
   </dir>
@@ -94,5 +114,18 @@ To use:
    </pearinstaller>
   </required>
  </dependencies>
- <phprelease/>
+ <phprelease>
+  <filelist>
+   <install name="src/PEAR2/Autoload.php" as="PEAR2/Autoload.php"/>
+   <install name="tests/initialize_basic001.phpt" as="initialize_basic001.phpt"/>
+   <install name="tests/initialize_basic002.phpt" as="initialize_basic002.phpt"/>
+   <install name="tests/initialize_basic003.phpt" as="initialize_basic003.phpt"/>
+   <install name="tests/initialize_basic004.phpt" as="initialize_basic004.phpt"/>
+   <install name="tests/initialize_basic005.phpt" as="initialize_basic005.phpt"/>
+   <install name="tests/initialize_trait001.phpt" as="initialize_trait001.phpt"/>
+   <install name="tests/run-tests.php.inc" as="run-tests.php.inc"/>
+   <install name="tests/_files/testDir1/Foo.php" as="_files/testDir1/Foo.php"/>
+   <install name="tests/_files/testDir1/FooTrait.php" as="_files/testDir1/FooTrait.php"/>
+  </filelist>
+ </phprelease>
 </package>

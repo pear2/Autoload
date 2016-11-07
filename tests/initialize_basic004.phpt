@@ -2,7 +2,8 @@
 Test PEAR2\Autoload initalization w/2nd path, loading class & writing map.
 --FILE--
 <?php
-require __DIR__ . '/../src/PEAR2/Autoload.php';
+chdir(__DIR__);
+require '../src/PEAR2/Autoload.php';
 PEAR2\Autoload::initialize(__DIR__.'/_files', __DIR__.'/_files/_files_map.php.inc');
 echo testDir1\Foo::sayHello();
 

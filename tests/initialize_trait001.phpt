@@ -7,7 +7,8 @@ Test PEAR2\Autoload initalization
 --FILE--
 <?php
 use testDir1\FooTrait;
-require __DIR__ . '/../src/PEAR2/Autoload.php';
+chdir(__DIR__);
+require '../src/PEAR2/Autoload.php';
 PEAR2\Autoload::initialize(__DIR__.'/_files');
 
 class FooTraitUser {
