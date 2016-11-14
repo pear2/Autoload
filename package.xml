@@ -43,8 +43,8 @@ To use:
   <email>boen.robot@gmail.com</email>
   <active>yes</active>
  </contributor>
- <date>2016-11-07</date>
- <time>02:44:17</time>
+ <date>2016-11-15</date>
+ <time>00:58:49</time>
  <version>
   <release>0.3.0</release>
   <api>0.1.0</api>
@@ -71,6 +71,7 @@ To use:
    <dir name="src" baseinstalldir="/">
     <dir name="PEAR2">
      <file role="php" name="Autoload.php">
+      <tasks:replace type="package-info" to="version" from="@PACKAGE_VERSION@"/>
       <tasks:replace type="package-info" to="version" from="GIT: $Id$"/>
      </file>
     </dir>
