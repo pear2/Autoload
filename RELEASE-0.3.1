@@ -1,0 +1,1 @@
+- Fixed file checking when inside PHAR for some PHP versions. Done by reverting to file_exists() instead of is_file(), but also with added \!is_dir() to prevent folders from being included.

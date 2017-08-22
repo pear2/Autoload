@@ -277,7 +277,9 @@ if (!class_exists('\PEAR2\Autoload', false)) {
             }
             $file .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
             foreach (self::$paths as $path) {
-                if (is_file($path . DIRECTORY_SEPARATOR . $file)) {
+                if (file_exists($path . DIRECTORY_SEPARATOR . $file)
+                    && !is_dir($path . DIRECTORY_SEPARATOR . $file)
+                ) {
                     include $path . DIRECTORY_SEPARATOR . $file;
                     if (!self::loadSuccessful($class)) {
                         if (count(spl_autoload_functions()) > 1) {
